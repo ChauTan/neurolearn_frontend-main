@@ -53,8 +53,9 @@ export default function CourseCard({ course }: { course: CourseCardProps['course
       const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URI}/cart/cart-items`, {
         withCredentials: true,
       });
-      const cartItems = response.data.cart.items;
-      return cartItems.some((item: any) => item?.courseId._id === course._id);
+      const cart = response?.data?.cart;
+      const cartItems = Array.isArray(cart?.items) ? cart.items : [];
+      return cartItems.some((item: any) => item?.courseId?._id === course._id);
     } catch (error) {
       console.error('Error checking cart:', error);
       return false;
